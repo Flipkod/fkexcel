@@ -25,7 +25,7 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-include(__DIR__.'/../Shared/FKExcel_Shared_String');
+
 
 FKExcel_Autoloader::Register();
 
