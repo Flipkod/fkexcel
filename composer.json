@@ -1,0 +1,28 @@
+{
+    "name": "flipkod/fkexcel",
+    "description": "FKExcel",
+    "keywords": ["PHP","Excel","OpenXML","xlsx","xls","spreadsheet"],
+    "homepage": "https://github.com/PHPOffice/PHPExcel",
+    "type": "library",
+    "license": "LGPL-2.1",
+    "authors": [
+        {
+            "name": "Hrvoje Gorajscan"
+        }
+    ],
+    "require": {
+        "php": "^5.2|^7.0",
+        "ext-mbstring": "*",
+        "ext-xml": "*",
+        "ext-xmlwriter": "*"
+    },
+    "recommend": {
+        "ext-zip": "*",
+        "ext-gd": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "FKExcel": "Classes/"
+        }
+    }
+}
