@@ -25,7 +25,11 @@
  * @version    ##VERSION##, ##DATE##
  */
 
+include(__DIR__.'/../Shared/FKExcel_Shared_String');
+
 FKExcel_Autoloader::Register();
+
+
 //    As we always try to run the autoloader before anything else, we can use it to do a few
 //        simple checks and initialisations
 //FKExcel_Shared_ZipStreamWrapper::register();

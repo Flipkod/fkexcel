@@ -29,9 +29,8 @@
 /** FKExcel root directory */
 if (!defined('FKExcel_ROOT')) {
     define('FKExcel_ROOT', dirname(__FILE__) . '/');
-    require(FKExcel_ROOT . 'FKExcel/Autoloader.php');
+    require(FKExcel_ROOT . 'Classes/Autoloader.php');
 }
-
 
 /**
  * FKExcel
