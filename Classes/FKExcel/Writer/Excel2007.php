@@ -185,8 +185,8 @@ class FKExcel_Writer_Excel2007 extends FKExcel_Writer_Abstract implements FKExce
 	 */
 	public function save($pFilename = null)
 	{
-		$lf = Config::get('site_root').'storage/tmp/log_dwn_rep.txt';
-		file_put_contents($lf, 'Krenuo save:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+		//$lf = Config::get('site_root').'storage/tmp/log_dwn_rep.txt';
+		//file_put_contents($lf, 'Krenuo save:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 		if ($this->_spreadSheet !== NULL) {
 			// garbage collect
 			$this->_spreadSheet->garbageCollect();
@@ -205,7 +205,7 @@ class FKExcel_Writer_Excel2007 extends FKExcel_Writer_Abstract implements FKExce
 			$saveDateReturnType = FKExcel_Calculation_Functions::getReturnDateType();
 			FKExcel_Calculation_Functions::setReturnDateType(FKExcel_Calculation_Functions::RETURNDATE_EXCEL);
 
-			file_put_contents($lf, ' Create string lookup table:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+			//file_put_contents($lf, ' Create string lookup table:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 			// Create string lookup table
 			$this->_stringTable = array();
 			for ($i = 0; $i < $this->_spreadSheet->getSheetCount(); ++$i) {
@@ -221,12 +221,12 @@ class FKExcel_Writer_Excel2007 extends FKExcel_Writer_Abstract implements FKExce
 			$this->_bordersHashTable->addFromSource( 			$this->getWriterPart('Style')->allBorders($this->_spreadSheet) 			);
 			$this->_numFmtHashTable->addFromSource( 			$this->getWriterPart('Style')->allNumberFormats($this->_spreadSheet) 	);
 
-			file_put_contents($lf, 'Create styles dictionaries:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+			//file_put_contents($lf, 'Create styles dictionaries:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 			
 			// Create drawing dictionary
 			$this->_drawingHashTable->addFromSource( 			$this->getWriterPart('Drawing')->allDrawings($this->_spreadSheet) 		);
 
-			file_put_contents($lf, 'Create drawing dictionary:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+			//file_put_contents($lf, 'Create drawing dictionary:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 			
 			// Create new ZIP file and open it for writing
 			$zipClass = FKExcel_Settings::getZipClass();
@@ -248,7 +248,7 @@ class FKExcel_Writer_Excel2007 extends FKExcel_Writer_Abstract implements FKExce
 				}
 			}
 			
-			file_put_contents($lf, 'ZIP:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+			//file_put_contents($lf, 'ZIP:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 
 			// Add [Content_Types].xml to ZIP file
 			$objZip->addFromString('[Content_Types].xml', 			$this->getWriterPart('ContentTypes')->writeContentTypes($this->_spreadSheet, $this->_includeCharts));
@@ -278,7 +278,7 @@ class FKExcel_Writer_Excel2007 extends FKExcel_Writer_Abstract implements FKExce
 			$objZip->addFromString('xl/workbook.xml', 				$this->getWriterPart('Workbook')->writeWorkbook($this->_spreadSheet, $this->_preCalculateFormulas));
 
 			$chartCount = 0;
-			file_put_contents($lf, 'Start Adding Work sheet:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+			//file_put_contents($lf, 'Start Adding Work sheet:'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 			// Add worksheets
 			for ($i = 0; $i < $this->_spreadSheet->getSheetCount(); ++$i) {
 				$objZip->addFromString('xl/worksheets/sheet' . ($i + 1) . '.xml', $this->getWriterPart('Worksheet')->writeWorksheet($this->_spreadSheet->getSheet($i), $this->_stringTable, $this->_includeCharts));
@@ -292,7 +292,7 @@ class FKExcel_Writer_Excel2007 extends FKExcel_Writer_Abstract implements FKExce
 					}
 				}
 			}
-			file_put_contents($lf, 'Finished Adding Work sheet, now relations: '.$this->_spreadSheet->getSheetCount()." --> ".date('h:i:s'), FILE_APPEND | LOCK_EX);
+			//file_put_contents($lf, 'Finished Adding Work sheet, now relations: '.$this->_spreadSheet->getSheetCount()." --> ".date('h:i:s'), FILE_APPEND | LOCK_EX);
 			$chartRef1 = $chartRef2 = 0;
 			// Add worksheet relationships (drawings, ...)
 			for ($i = 0; $i < $this->_spreadSheet->getSheetCount(); ++$i) {
@@ -339,7 +339,7 @@ class FKExcel_Writer_Excel2007 extends FKExcel_Writer_Abstract implements FKExce
 				}
 			}
 
-			file_put_contents($lf, 'Start Adding Media:'.$this->getDrawingHashTable()->count().' -->'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+			// file_put_contents($lf, 'Start Adding Media:'.$this->getDrawingHashTable()->count().' -->'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 			// Add media
 			for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
 				if ($this->getDrawingHashTable()->getByIndex($i) instanceof FKExcel_Worksheet_Drawing) {
@@ -370,18 +370,18 @@ class FKExcel_Writer_Excel2007 extends FKExcel_Writer_Abstract implements FKExce
 
 					$objZip->addFromString('xl/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
 				}
-				if($i%1000==0) file_put_contents($lf, 'Rows:'.$i.' -->'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+				// if($i%1000==0) file_put_contents($lf, 'Rows:'.$i.' -->'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 			}
 
 			FKExcel_Calculation_Functions::setReturnDateType($saveDateReturnType);
 			FKExcel_Calculation::getInstance($this->_spreadSheet)->getDebugLog()->setWriteDebugLog($saveDebugLog);
 
-			file_put_contents($lf, 'Close file -->'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+			// file_put_contents($lf, 'Close file -->'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 			// Close file
 			if ($objZip->close() === false) {
 				throw new FKExcel_Writer_Exception("Could not close zip file $pFilename.");
 			}
-			file_put_contents($lf, 'Copy file -->'.date('h:i:s'), FILE_APPEND | LOCK_EX);
+			// file_put_contents($lf, 'Copy file -->'.date('h:i:s'), FILE_APPEND | LOCK_EX);
 			// If a temporary file was used, copy it to the correct file stream
 			if ($originalFilename != $pFilename) {
 				if (copy($pFilename, $originalFilename) === false) {
